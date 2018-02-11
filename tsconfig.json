@@ -2,7 +2,9 @@
     "compilerOptions": {
         "target": "es6",
         "module": "commonjs",
-        "outDir": "dist"
+        "lib": [
+            "esnext"
+        ]
     },
     "compileOnSave": false,
     "include": [
