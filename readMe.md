@@ -1,1 +1,1 @@
-**node, typescript e graphql**
+**typescript, node(express) e graphql**
