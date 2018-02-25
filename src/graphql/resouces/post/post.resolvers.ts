@@ -2,7 +2,7 @@ import { GraphQLResolveInfo } from "graphql";
 import { Transaction } from "sequelize";
 
 import { DbConnection } from "../../../interfaces/DBConnectionInterface";
-import { PostInstace } from "../../../models/PostModel";
+import { PostInstance } from "../../../models/PostModel";
 import { handleError } from "../../../utils/utils";
 
 export const postResolvers = {
@@ -39,7 +39,7 @@ export const postResolvers = {
             id = parseInt(id)
             return db.Post
                 .findById(id)
-                .then((post: PostInstace) => {
+                .then((post: PostInstance) => {
                     if (!post) throw new Error(`Post with id ${id} not found!`)
                     return post
                 })
@@ -61,7 +61,7 @@ export const postResolvers = {
             return db.sequelize.transaction((t: Transaction) => {
                 return db.Post
                    .findById(id)
-                   .then((post: PostInstace) => {
+                   .then((post: PostInstance) => {
                         if (!post) throw new Error(`Post with id ${id} not found!`)
                         return post.update(input, {transaction: t})
                    })
@@ -74,7 +74,7 @@ export const postResolvers = {
             return db.sequelize.transaction((t: Transaction) => {
                 return db.Post
                    .findById(id)
-                   .then((post: PostInstace) => {
+                   .then((post: PostInstance) => {
                         if (!post) throw new Error(`Post with id ${id} not found!`)
                         return post.destroy({transaction: t})
                             .then(post => !!post)

@@ -2,7 +2,7 @@ import { GraphQLResolveInfo } from "graphql";
 import { Transaction } from "sequelize";
 
 import { DbConnection } from "../../../interfaces/DBConnectionInterface";
-import { CommentInstace } from "../../../models/CommentModel";
+import { CommentInstance } from "../../../models/CommentModel";
 import { handleError } from "../../../utils/utils";
 
 export const commentResolvers = {
@@ -12,11 +12,9 @@ export const commentResolvers = {
             return db.User
                 .findById(comment.get('user'))
                 .catch(handleError)
-        }
-    },
+        },
 
-    Post: {
-        author:  (comment, args, { db }: { db: DbConnection }, info: GraphQLResolveInfo) => {
+        post:  (comment, args, { db }: { db: DbConnection }, info: GraphQLResolveInfo) => {
             return db.Post
                 .findById(comment.get('post'))
                 .catch(handleError)
@@ -50,7 +48,7 @@ export const commentResolvers = {
             return db.sequelize.transaction((t: Transaction) => {
                 return db.Comment
                     .findById(id)
-                    .then((comment: CommentInstace) => {
+                    .then((comment: CommentInstance) => {
                         if (!comment) throw new Error(`Comment with id ${id} not found!`)
                         return comment.update(input, {transaction: t})
                     })
@@ -63,7 +61,7 @@ export const commentResolvers = {
             return db.sequelize.transaction((t: Transaction) => {
                 return db.Comment
                     .findById(id)
-                    .then((comment: CommentInstace) => {
+                    .then((comment: CommentInstance) => {
                         if (!comment) throw new Error(`Comment with id ${id} not found!`)
                         return comment.destroy({transaction: t})
                             .then(comment => !!comment)
