@@ -10,8 +10,8 @@ export interface UserAttributes {
     email?: string
     password?: string
     photo?: string,
-    createAt?: string,
-    updateAt?: string
+    createdAt?: string,
+    updatedAt?: string
 }
 
 export interface UserInstance extends Sequelize.Instance<UserAttributes>, UserAttributes {
@@ -68,7 +68,7 @@ export default (sequelize: Sequelize.Sequelize, DataTypes: Sequelize.DataTypes):
          }
      })
 
-     User.associate = ( models: ModelsInterface) => {}
+     User.associate = ( models: ModelsInterface): void => {}
      
      User.prototype.isPassword = (encodedPassword: string, password: string): boolean => {
          return compareSync(password, encodedPassword)

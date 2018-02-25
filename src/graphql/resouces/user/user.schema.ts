@@ -7,8 +7,8 @@ const userTypes = `
         email: String!
         photo: String
         posts(first: Int, offset: Int): [Post!]!
-        createAt: String!
-        updateAt: String!
+        createdAt: String!
+        updatedAt: String!
     }
 
     # UserCreate Input
