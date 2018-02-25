@@ -6,10 +6,10 @@ const postTypes = `
         title: String!
         content: String!
         photo: String!
+        author: User!
+        comments(first: Int, offset: Int): [Comment!]!
         createAt: String!
         updateAt: String!
-        author: User!
-        comments: [Comment!]!
     }
 
     # Post Input

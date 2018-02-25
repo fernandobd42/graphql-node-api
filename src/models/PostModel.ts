@@ -22,8 +22,8 @@ export default (sequelize: Sequelize.Sequelize, DataTypes: Sequelize.DataTypes):
     const Post: PostModel = sequelize.define('Post', {
         id: {
             type: DataTypes.INTEGER,
-            allowNull: false,
             primaryKey: true,
+            allowNull: false,
             autoIncrement: true
         },
         title: {
@@ -38,13 +38,15 @@ export default (sequelize: Sequelize.Sequelize, DataTypes: Sequelize.DataTypes):
             type: DataTypes.BLOB({
                 length: 'long'
             }),
-            allowNull: false
+            allowNull: true,
+            defaultValue: null
         }
     }, {
         tableName: 'posts'
     })
 
     Post.associate = (models: ModelsInterface): void => {
+
         Post.belongsTo(models.User, {
             foreignKey: {
                 allowNull: false,

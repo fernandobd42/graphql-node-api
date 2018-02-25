@@ -4,10 +4,10 @@ const commentTypes = `
     type Comment {
         id: ID!
         comment: String!
-        createAt: String!
-        updateAt: String!
         user: User!
         post: Post!
+        createAt: String!
+        updateAt: String!
     }
 
     # Comment Input
@@ -31,7 +31,7 @@ const commentMutations = `
     updateComment(id: ID!, input: CommentInput!): Comment
 
     # Delete a comment
-    deleteComent(id: ID!): Boolean
+    deleteComment(id: ID!): Boolean
 `
 
 export {
