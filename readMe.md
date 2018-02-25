@@ -63,9 +63,26 @@ query Users {
 
 query User {
   user(id: 1) {
-    id
+id
+    name
+    email
+    photo
     createdAt
     updatedAt
+    posts {
+      id
+      title
+      content
+      photo
+      comments {
+        id
+        comment
+        user {
+          id
+          name
+        }
+      }
+    }
   }
 }
 ```
@@ -84,6 +101,7 @@ mutation CreatePost {
     title
     content
     photo
+    createdAt
    	author {
       id
       name
@@ -102,12 +120,20 @@ mutation UpdatePost {
     title
     content
     photo
+    createdAt
+    updatedAt
     author {
       id
       name
     }
-    createdAt
-    updatedAt
+    comments {
+      id
+      comment
+      user {
+        id
+        name
+      }
+    }
   }
 }
 
@@ -124,14 +150,18 @@ query Posts {
     title
     content
     photo
+    createdAt
+    updatedAt
     author {
       id
+      name
     }
     comments {
       id
       comment
       user {
         id
+        name
       }
     }
   }
@@ -143,6 +173,8 @@ query Post {
     title
     content
     photo
+    createdAt
+    updatedAt
     author {
       id
       name
@@ -150,9 +182,11 @@ query Post {
     comments {
       id
       comment
+        user {
+        id
+        name
+      }
     }
-    createdAt
-    updatedAt
   }
 }
 ```
@@ -168,9 +202,14 @@ mutation CreateComment {
   }) {
     id
     comment
+    createdAt
     user {
       id
       name
+    }
+    post {
+      id
+      title
     }
   }
 }
@@ -183,12 +222,16 @@ mutation UpdateComment {
   }) {
     id
     comment
-    user {
-      id
-      name
-    }
     createdAt
     updatedAt
+    user {
+    	id
+      name
+    }
+    post {
+      id
+      title
+    }
   }
 }
 
@@ -203,12 +246,16 @@ query CommentsByPost {
   commentsByPost(postId: 5, first: 10, offset: 0) {
     id
     comment
+    createdAt
+    updatedAt
+    post {
+      id
+      title
+    }
     user {
       id
       name
     }
-    createdAt
-    updatedAt
   }
 }
 ```
