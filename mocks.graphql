@@ -1,0 +1,250 @@
+# USER MUTATIONS
+mutation CreateUser {
+  createUser(input: {
+    name: "beltranao"
+    email: "beltrano@gmail.com"
+    password: "beltrano123"
+  }) {
+    id
+    name
+    email
+  }
+}
+
+mutation UpdateUser {
+  updateUser(id: 1, input: {
+    name: "Ciclano"
+    email: "ciclano@gmail.com",
+    photo: "ciclano.png"
+  }) {
+		id
+    name
+    email
+    photo
+    createdAt
+    updatedAt
+    posts {
+      id
+      title
+      comments {
+        id
+        comment
+      }
+    }
+  }
+}
+
+mutation UpdateUserPassword {
+  updateUserPassword(id: 1, input: {
+    password: "ciclano123"
+  }) 
+}
+
+mutation DeleteUser {
+  deleteUser(id: 1) 
+}
+
+# USER QUERIES
+query Users {
+  users(first: 10, offset: 0){
+		id
+    name
+    email
+    photo
+    createdAt
+    updatedAt
+  }
+}
+
+query User {
+  user(id: 2) {
+    id
+    name
+    email
+    photo
+    createdAt
+    updatedAt
+    posts {
+      id
+      title
+      content
+      photo
+      comments {
+        id
+        comment
+        user {
+          id
+          name
+        }
+      }
+    }
+
+  }
+}
+
+
+
+# POST MUTATIONS
+mutation CreatePost {
+  createPost(input: {
+    title: "first post title"
+  	content: "first post content"
+		photo: "photo.png"
+    author: 2
+  }) {
+    id
+    title
+    content
+    photo
+    createdAt
+   	author {
+      id
+      name
+    }
+  }
+}
+
+mutation UpdatePost {
+  updatePost(id: 2, input: {
+    title: "updated title"
+    content: "updated content"
+    photo: "updatedPhoto.png"
+    author: 2
+  }) {
+    id
+    title
+    content
+    photo
+    createdAt
+    updatedAt
+    author {
+      id
+      name
+    }
+    comments {
+      id
+      comment
+      user {
+        id
+        name
+      }
+    }
+  }
+}
+
+mutation DeletePost {
+  deletePost(id: 1)
+}
+
+# POST QUERIES
+query Posts {
+  posts {
+    id
+    title
+    content
+    photo
+    createdAt
+    updatedAt
+    author {
+      id
+      name
+    }
+    comments {
+      id
+			comment
+      user {
+        id
+        name
+      }
+    }
+  }
+}
+
+query Post {
+  post(id: 2) {
+    id
+    title
+    content
+    photo
+    createdAt
+    updatedAt
+    author {
+      id
+      name
+    }
+    comments {
+      id
+      comment
+      user {
+        id
+        name
+      }
+    }
+  }
+}
+
+
+
+# COMMENT MUTATIONS
+mutation CreateComment {
+  createComment(input: {
+    comment: "new comment"
+    user: 2
+    post: 2
+  }) {
+    id
+    comment
+    createdAt
+    user {
+      id
+      name
+    }
+    post {
+      id
+      title
+    }
+  }
+}
+
+mutation UpdateComment {
+  updateComment(id: 3, input: {
+    comment: "updated comment"
+    user: 2
+   	post: 2
+  }) {
+    id
+    comment
+    createdAt
+    updatedAt
+    user {
+    	id
+      name
+    }
+    post {
+      id
+      title
+    }
+  }
+}
+
+mutation deleteComment {
+  deleteComment(id: 1)
+}
+
+# COMMENT QUERIES
+query CommentsByPost {
+  commentsByPost(postId: 2, first: 10, offset: 0) {
+    id
+    comment
+    createdAt
+    updatedAt
+    post {
+      id
+      title
+    }
+    user {
+      id
+      name
+    }
+  }
+}

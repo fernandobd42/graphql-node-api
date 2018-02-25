@@ -4,13 +4,13 @@ import { merge } from 'lodash'
 import { Query } from './query'
 import { Mutation } from './mutation'
 
-import { commentTypes } from './resouces/comment/comment.schema';
-import { postTypes } from './resouces/post/post.schema';
-import { userTypes } from './resouces/user/user.schema';
+import { commentTypes } from './resources/comment/comment.schema';
+import { postTypes } from './resources/post/post.schema';
+import { userTypes } from './resources/user/user.schema';
 
-import { commentResolvers } from './resouces/comment/comment.resolvers';
-import { postResolvers } from './resouces/post/post.resolvers';
-import { userResolvers } from './resouces/user/user.resolver';
+import { commentResolvers } from './resources/comment/comment.resolvers';
+import { postResolvers } from './resources/post/post.resolvers';
+import { userResolvers } from './resources/user/user.resolver';
 
 const resolvers = merge(
     commentResolvers,

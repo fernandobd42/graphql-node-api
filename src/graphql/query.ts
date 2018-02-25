@@ -1,6 +1,6 @@
-import { commentQueries } from './resouces/comment/comment.schema';
-import { postQueries } from './resouces/post/post.schema';
-import { userQueries } from './resouces/user/user.schema'
+import { commentQueries } from './resources/comment/comment.schema';
+import { postQueries } from './resources/post/post.schema';
+import { userQueries } from './resources/user/user.schema'
 
 const Query = `
     # All Queries
