@@ -8,6 +8,7 @@
 - [Post Queries](#post-queries)
 - [Comment Mutations](#comment-mutations)
 - [Comment Queries](#comment-queries)
+- [Token Mutation](#token-mutation)
 
 ##### USER MUTATIONS
 ```mutation CreateUser {
@@ -23,7 +24,7 @@
 }
 
 mutation UpdateUser {
-  updateUser(id: 1, input: {
+  updateUser(input: {
     name: "Ciclano"
     email: "ciclano@gmail.com",
     photo: "ciclano.png"
@@ -38,13 +39,13 @@ mutation UpdateUser {
 }
 
 mutation UpdateUserPassword {
-  updateUserPassword(id: 1, input: {
+  updateUserPassword(input: {
     password: "ciclano123"
   }) 
 }
 
 mutation DeleteUser {
-  deleteUser(id: 1) 
+  deleteUser
 }
 ```
 
@@ -63,7 +64,7 @@ query Users {
 
 query User {
   user(id: 1) {
-id
+    id
     name
     email
     photo
@@ -95,7 +96,6 @@ mutation CreatePost {
     title: "first post title"
     content: "first post content"
     photo: "photo.png"
-    author: 2
   }) {
     id
     title
@@ -114,7 +114,6 @@ mutation UpdatePost {
     title: "updated title"
     content: "updated content"
     photo: "updatedPhoto.png"
-    author: 2
   }) {
     id
     title
@@ -198,7 +197,6 @@ mutation CreateComment {
   createComment(input: {
     comment: "new comment"
     post: 5
-    user: 1
   }) {
     id
     comment
@@ -218,7 +216,6 @@ mutation UpdateComment {
   updateComment(id: 2, input: {
     comment: "updated comment"
     post: 1
-    user: 1
   }) {
     id
     comment
@@ -256,6 +253,16 @@ query CommentsByPost {
       id
       name
     }
+  }
+}
+```
+
+##### TOKEN MUTATION
+````
+mutation createNewToken {
+  createToken(email: "Fulano@email.com", password: "123456"
+  ) {
+    token
   }
 }
 ```
