@@ -37,6 +37,9 @@ const userQueries = `
 
     # User
     user(id: ID!): User
+
+    # Current user
+    currentUser: User
 `
 
 const userMutations = `
@@ -44,13 +47,13 @@ const userMutations = `
     createUser(input: UserCreateInput!): User
 
     # Update a user
-    updateUser(id: ID!, input: UserUpdateInput!): User
+    updateUser(input: UserUpdateInput!): User
 
     # Update a password of user
-    updateUserPassword(id: ID!, input: UserUpdatePasswordInput!): Boolean
+    updateUserPassword(input: UserUpdatePasswordInput!): Boolean
 
     # Delete a user
-    deleteUser(id: ID!): Boolean
+    deleteUser: Boolean
 `
 
 export {
