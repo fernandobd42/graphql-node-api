@@ -1,47 +1,54 @@
 import { GraphQLResolveInfo } from "graphql";
 import { Transaction } from "sequelize";
 
-import { DbConnection } from "../../../interfaces/DBConnectionInterface";
 import { AuthUser } from "../../../interfaces/AuthUserInterface";
 import { PostInstance } from "../../../models/PostModel";
 import { handleError, throwError } from "../../../utils/utils";
 import { compose } from "../../composable/composable.resolver";
 import { authResolvers } from "../../composable/auth.resolver";
+import { ResolverContext } from "../../../interfaces/ResolverContextInterface";
 
 export const postResolvers = {
 
     Post: {
-        author: (post, args, { db }: { db: DbConnection }, info: GraphQLResolveInfo) => {
-            return db.User
-                .findById(post.get('author'))
-                .catch(handleError)
+        author: (post, args, context: ResolverContext, info: GraphQLResolveInfo) => {
+            return context.dataloaders.userLoader
+                .load({
+                    key: post.get('author'),
+                    info
+                })
+                .catch(handleError) 
         },
 
-        comments: (post, { first = 10, offset = 0 }, { db }: { db: DbConnection }, info: GraphQLResolveInfo) => {
-            return db.Comment
+        comments: (post, { first = 10, offset = 0 }, context: ResolverContext, info: GraphQLResolveInfo) => {
+            return context.db.Comment
                 .findAll({
                     where: {post: post.get('id')},
                     limit: first,
-                    offset: offset
+                    offset: offset,
+                    attributes: context.requestedFields.getFields(info)
                 })
                 .catch(handleError)
         },
     },
 
     Query: {
-        posts: (parent, { first = 10, offset = 0 }, { db }: { db: DbConnection }, info: GraphQLResolveInfo) => {
-            return db.Post
+        posts: (parent, { first = 10, offset = 0 }, context: ResolverContext, info: GraphQLResolveInfo) => {
+            return context.db.Post
                 .findAll({
                     limit: first,
-                    offset: offset
+                    offset: offset,
+                    attributes: context.requestedFields.getFields(info, { keep: ['id'], exclude: ['comments']})
                 })
                 .catch(handleError)
         },
 
-        post: (parent, { id }, { db }: { db: DbConnection }, info: GraphQLResolveInfo) => {
+        post: (parent, { id }, context: ResolverContext, info: GraphQLResolveInfo) => {
             id = parseInt(id)
-            return db.Post
-                .findById(id)
+            return context.db.Post
+                .findById(id, {
+                    attributes: context.requestedFields.getFields(info, { keep: ['id'], exclude: ['comments']})
+                })
                 .then((post: PostInstance) => {
                     throwError (!post, `Post with id ${id} not found!`)
                     return post
@@ -51,39 +58,39 @@ export const postResolvers = {
     },
 
     Mutation: {
-        createPost: compose(...authResolvers)((parent, { input }, { db, authUser }: { db: DbConnection, authUser: AuthUser }, info: GraphQLResolveInfo) => {
-            input.author = authUser.id
+        createPost: compose(...authResolvers)((parent, { input }, context: ResolverContext, info: GraphQLResolveInfo) => {
+            input.author = context.authUser.id
 
-            return db.sequelize.transaction((t: Transaction) => {
-                return db.Post
+            return context.db.sequelize.transaction((t: Transaction) => {
+                return context.db.Post
                     .create(input, {transaction: t})
             })
             .catch(handleError)
         }),
 
-        updatePost: compose(...authResolvers)((parent, { id, input }, { db, authUser }: { db: DbConnection, authUser: AuthUser }, info: GraphQLResolveInfo) => {
+        updatePost: compose(...authResolvers)((parent, { id, input }, context: ResolverContext, info: GraphQLResolveInfo) => {
             id = parseInt(id)
-            return db.sequelize.transaction((t: Transaction) => {
-                return db.Post
+            return context.db.sequelize.transaction((t: Transaction) => {
+                return context.db.Post
                    .findById(id)
                    .then((post: PostInstance) => {
                         throwError (!post, `Post with id ${id} not found!`)
-                        throwError (post.get('author') != authUser.id, `Unauthorized! You can only edit posts by yourself!`)
-                        input.author = authUser.id
+                        throwError (post.get('author') != context.authUser.id, `Unauthorized! You can only edit posts by yourself!`)
+                        input.author = context.authUser.id
                         return post.update(input, {transaction: t})
                    })
             })
             .catch(handleError)
         }),
 
-        deletePost: compose(...authResolvers)((parent, { id }, { db, authUser }: { db: DbConnection, authUser: AuthUser }, info: GraphQLResolveInfo) => {
+        deletePost: compose(...authResolvers)((parent, { id }, context: ResolverContext, info: GraphQLResolveInfo) => {
             id = parseInt(id)
-            return db.sequelize.transaction((t: Transaction) => {
-                return db.Post
+            return context.db.sequelize.transaction((t: Transaction) => {
+                return context.db.Post
                    .findById(id)
                    .then((post: PostInstance) => {
                         throwError (!post, `Post with id ${id} not found!`)
-                        throwError (post.get('author') != authUser.id, `Unauthorized! You can only delete posts by yourself!`)
+                        throwError (post.get('author') != context.authUser.id, `Unauthorized! You can only delete posts by yourself!`)
                         return post.destroy({transaction: t})
                             .then(post => !!post)
                    })
