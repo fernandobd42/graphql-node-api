@@ -1,5 +1,27 @@
 # typescript, node(express) e graphql
 
+### After download, just follow:
+
+- to install dependencies, run:
+```
+npm install
+```
+
+- to generate the bundle through gulp, run: 
+```
+npm run gulp
+```
+
+- to start server, run: 
+```
+npm run dev
+```
+
+- to run tests, run:
+```
+npm test
+```
+
 ### Mutations and Queries examples
 
 - [User Mutations](#user-mutations)
