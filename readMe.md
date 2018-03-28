@@ -22,6 +22,13 @@ npm run dev
 npm test
 ```
 
+- to run code coverage, run:
+
+```
+npm run coverage
+```
+Then open coverage directory on root of project and open index.html on browser to see the results;
+
 ### Mutations and Queries examples
 
 - [User Mutations](#user-mutations)
