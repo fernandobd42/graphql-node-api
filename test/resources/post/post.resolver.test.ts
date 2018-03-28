@@ -1,7 +1,7 @@
 import * as jwt from 'jsonwebtoken'
 import { app, db, chai, handleError, expect } from './../../test-utils'
-import { UserInstance } from '../../../src/models/UserModel';
 import { JWT_SECRET } from '../../../src/utils/utils';
+import { UserInstance } from '../../../src/models/UserModel';
 import { PostInstance } from '../../../src/models/PostModel';
 
 describe('Post', () => {
@@ -21,7 +21,7 @@ describe('Post', () => {
           password: 'majinboo123'
         }
       )).then((user: UserInstance) => {
-        userId = user.id;
+        userId = user.get('id');
         const payload = {sub: userId}
         token = jwt.sign(payload, JWT_SECRET)
         

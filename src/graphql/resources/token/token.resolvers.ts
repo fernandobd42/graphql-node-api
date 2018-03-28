@@ -14,7 +14,7 @@ export const tokenResolvers = {
         attributes: ['id', 'password']
       }).then((user: UserInstance) => {
 
-        let errorMessage: string = 'Email ou Password está incorreto!'
+        let errorMessage: string = 'Unauthorized! Wrong email or password!'
         if (!user || !user.isPassword(user.get('password'), password)) { throw new Error(errorMessage) }
 
         const payload = { sub: user.get('id')}
